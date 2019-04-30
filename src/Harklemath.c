@@ -1027,7 +1027,7 @@ double calc_int_point_dist(int xCoord1, int yCoord1, int xCoord2, int yCoord2)
     if (xCoord1 != xCoord2 || yCoord1 != yCoord2)
     {
         // Calculate the distance
-        calcDistance = sqrt(pow((xCoord2 - xCoord1), 2) + pow((yCoord2 - yCoord1), 2))
+        calcDistance = sqrt(pow((xCoord2 - xCoord1), 2) + pow((yCoord2 - yCoord1), 2));
     }    
 
     // DONE
