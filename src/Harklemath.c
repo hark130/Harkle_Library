@@ -4,7 +4,7 @@
 #include "Harklemath.h"			// HM_* MACROs
 #include "Harklerror.h"			// HARKLE_ERROR
 #include <limits.h>				// INT_MIN, INT_MAX
-#include <math.h>				// sqrt()
+#include <math.h>				// sqrt(), pow()
 #include <stdbool.h>			// bool, true, false
 #include <stdio.h>				// sprintf()
 #include <stdlib.h>				// atof()
@@ -1015,6 +1015,23 @@ hcCartCoord_ptr build_geometric_list(double* relEllipseCoords, int numPnts, int 
 
 	// DONE
 	return retVal;
+}
+
+
+double calc_int_point_dist(int xCoord1, int yCoord1, int xCoord2, int yCoord2)
+{
+    // LOCAL VARIABLES
+    double calcDistance = 0.0;  // Calculated distance between point1 and point2
+    
+    // INPUT VALIDATION
+    if (xCoord1 != xCoord2 || yCoord1 != yCoord2)
+    {
+        // Calculate the distance
+        calcDistance = sqrt(pow((xCoord2 - xCoord1), 2) + pow((yCoord2 - yCoord1), 2))
+    }    
+
+    // DONE
+    return calcDistance;
 }
 
 
