@@ -507,7 +507,7 @@ bool kill_a_winDetails_ptr(winDetails_ptr* oldStruct_ptr)
 	// INPUT VALIDATION
 	if (!oldStruct_ptr || NULL == *oldStruct_ptr)
 	{
-		HARKLE_ERROR(Harklecurse, kill_a_winDetails_ptr, NULL pointer);
+		HARKLE_ERROR(Harklecurse, kill_a_winDetails_ptr, Bad pointer);
 		retVal = false;
 	}
 
@@ -679,7 +679,7 @@ int kill_a_window(WINDOW** oldWin_ptr)
 		// delwin() will not succeed if if the window is the parent of another window
 		nRetVal = delwin(temp_ptr);
 		
-		if (ERR == nRetVal)
+		if (OK != nRetVal)
 		{
 			HARKLE_ERROR(Harklecurse, kill_a_window, delwin failed);
 			success = false;
@@ -729,7 +729,7 @@ bool print_plot_list(WINDOW* currWin, hcCartCoord_ptr headNode)
 		// fprintf(stdout, "Printing %c at (%d, %d)\t", currNode->graphic, currNode->absX, currNode->absY);  // DEBUGGING
 		if (OK != mvwaddch(currWin, currNode->absY, currNode->absX, currNode->graphic))
 		{
-			fprintf(stdout, "Failed to print %c at (%d, %d)\t", currNode->graphic, currNode->absX, currNode->absY);  // DEBUGGING
+			// fprintf(stdout, "Failed to print %c at (%d, %d)\t", currNode->graphic, currNode->absX, currNode->absY);  // DEBUGGING
 			HARKLE_ERROR(Harklecurse, print_plot_list, mvwaddch failed);
 			retVal = false;
 		}
