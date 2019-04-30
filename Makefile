@@ -9,9 +9,13 @@ Harklecurse:
 Harklemath:
 	$(CC) -c -o $(HL_BLD)Harklemath.o -I $(HL_HDR) -c $(HL_SRC)Harklemath.c
 
+Randoroad:
+	$(CC) -c -o $(HL_BLD)Randoroad.o -I $(HL_HDR) -c $(HL_SRC)Randoroad.c
+
 all:
 	$(MAKE) Harklecurse
 	$(MAKE) Harklemath
+	$(MAKE) Randoroad
 
 clean: 
 	rm -f *.o *.exe *.so
