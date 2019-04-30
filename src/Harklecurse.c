@@ -351,33 +351,32 @@ hcCartCoord_ptr get_pos_num(hcCartCoord_ptr startPnt, int posNumber)
 {
 	// LOCAL VARIABLES
 	hcCartCoord_ptr retVal = NULL;
-	bool success = true;  // Set this to false if anything fails
 
 	// INPUT VALIDATION
 	if (!startPnt)
 	{
-		HARKLE_ERROR(Harklecurse, get_pos_num, NULL pointer);
-		success = false;
+		HARKLE_ERROR(Harklecurse, get_pos_num, Invalid startPnt pointer);
 	}
 	else if (posNumber < 1)
 	{
 		HARKLE_ERROR(Harklecurse, get_pos_num, Invalid position number);
-		success = false;
 	}
-
-	// FIND THE NODE
-	retVal = startPnt;
-
-	while (retVal)
+	else
 	{
-		// fprintf(stdout, "Current position number:\t%d\n", retVal->posNum);  // DEBUGGING
-		if (retVal->posNum == posNumber)
+		// FIND THE NODE
+		retVal = startPnt;
+
+		while (retVal)
 		{
-			break;
-		}
-		else
-		{
-			retVal = retVal->nextPnt;
+			// fprintf(stdout, "Current position number:\t%d\n", retVal->posNum);  // DEBUGGING
+			if (retVal->posNum == posNumber)
+			{
+				break;
+			}
+			else
+			{
+				retVal = retVal->nextPnt;
+			}
 		}
 	}
 
