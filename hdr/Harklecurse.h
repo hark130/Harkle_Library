@@ -147,19 +147,18 @@ bool free_cardCoord_linked_list(hcCartCoord_ptr* oldHeadNode_ptr);
 
 
 /*
-	PURPOSE - Find the struct in linked list starting at headPnt whose posNum
-		matches posNumber
+	PURPOSE - Find the struct in linked list starting at headPnt whose posNum matches posNumber
 	INPUT
 		startPnt - Linked hcCartesianCoordinate struct pointer to begin at
 		posNumber - The position number to find
 	OUTPUT
-		On success, hcCartesianCoordinate struct pointer to the posNumber-th
-			node
-		On failure, 
+		On success, hcCartesianCoordinate struct pointer to the first node whose posNum matches
+			posNumber
+		On failure, NULL
 	NOTE
-		This function will NOT return the posNumber-th node.  It will search
-			for a posNum match to posNumber.
-		This function will return the first matching node it comes across
+		This function will NOT return the posNumber-th node.  It will search for a posNum match
+			to posNumber.
+		This function will return the first matching node it comes across.
  */
 hcCartCoord_ptr get_pos_num(hcCartCoord_ptr startPnt, int posNumber);
 
