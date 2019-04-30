@@ -11,6 +11,13 @@ typedef struct cartesianCoordinate
 	double yCoord;			// Y coordinate
 } cartPnt, *cartPnt_ptr;
 
+typedef struct hmLineLengthCalculation
+{
+    int xCoord;   // Absolute x coordinate
+    int yCoord;   // Absolute y coordinate
+    double dist;  // Distance from the current point
+} hmLineLen, *hmLineLen_ptr;
+
 // double is a 64 bit IEEE 754 double precision Floating Point Number (1 bit for the sign, 11 bits for the exponent, and 52* bits for the value), i.e. double has 15 decimal digits of precision.
 #define DBL_PRECISION 15
 
@@ -276,6 +283,23 @@ bool determine_center(int width, int height, int* xCoord, int* yCoord, int orien
 		On failure, NULL
  */
 hcCartCoord_ptr build_geometric_list(double* relEllipseCoords, int numPnts, int centX, int centY);
+
+
+/*
+    PURPOSE - Calculate the distance between integer representations of two points
+    INPUT
+        xCoord1 - X coordinate of point1
+        yCoord1 - Y coordinate of point1
+        xCoord2 - X coordinate of point2
+        yCoord2 - Y coordinate of point2
+    OUTPUT
+        On success, the distance between point1 and point 2 calculated to the greatest degree of precision
+        On failure, 0
+    NOTES
+        This function calls calc_max_precision() to determine the maximum precision supported
+ */
+double calc_int_point_dist(int xCoord1, int yCoord1, int xCoord2, int yCoord2);
+
 
 //////////////////////////////////////////////////////////////////////////////
 ////////////////////////// GEOMETRIC FUNCTIONS STOP //////////////////////////
