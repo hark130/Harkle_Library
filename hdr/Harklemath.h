@@ -295,8 +295,6 @@ hcCartCoord_ptr build_geometric_list(double* relEllipseCoords, int numPnts, int 
     OUTPUT
         On success, the distance between point1 and point 2 calculated to the greatest degree of precision
         On failure, 0
-    NOTES
-        This function calls calc_max_precision() to determine the maximum precision supported
  */
 double calc_int_point_dist(int xCoord1, int yCoord1, int xCoord2, int yCoord2);
 
