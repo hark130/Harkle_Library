@@ -330,6 +330,28 @@ double calc_int_point_slope(int xCoord1, int yCoord1, int xCoord2, int yCoord2);
 bool verify_slope(int xCoord1, int yCoord1, int xCoord2, int yCoord2, double slope, int maxPrec);
 
 
+/*
+    PURPOSE - Calculate the center point of a line created by two points
+    INPUT
+        point1_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
+        point2_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
+        midPoint_ptr - Out parameter to hold the coordinates and ~length of the mid point between point1
+            and point2
+        rndDir - The direction to round the resulting coordinates:
+            Use the HM_* MACROS above or
+            Use the original MACROS from fenv.h or
+            Pass 0 to utilize the default settings
+    OUTPUT
+        On success, true
+        On failure, false
+    NOTES
+        When successful, this function will store the coordinates and distance from point1_ptr into midPoint_ptr.
+        This function will fail if the point1 node is the same as the point2 node
+        This function will fail if the point1 coordinates are the same as the point2 coordinates
+ */
+bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr midPoint_ptr, int rndDbl);
+
+
 //////////////////////////////////////////////////////////////////////////////
 ////////////////////////// GEOMETRIC FUNCTIONS STOP //////////////////////////
 //////////////////////////////////////////////////////////////////////////////
