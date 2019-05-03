@@ -1043,7 +1043,7 @@ double calc_int_point_slope(int xCoord1, int yCoord1, int xCoord2, int yCoord2)
     double calcSlope = 0.0;  // Calculated slope between point1 and point2
 
     // INPUT VALIDATION
-    if (xCoord1 != xCoord2 || yCoord1 != yCoord2)
+    if ((xCoord1 != xCoord2 || yCoord1 != yCoord2) && (xCoord2 - xCoord1))
     {
         // Calculate the distance
         calcSlope = (double)(yCoord2 - yCoord1) / (xCoord2 - xCoord1);
@@ -1076,6 +1076,60 @@ bool verify_slope(int xCoord1, int yCoord1, int xCoord2, int yCoord2, double slo
 
     // DONE
     return slopeMatches;
+}
+
+
+bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr midPoint_ptr, int rndDbl)
+{
+    // LOCAL VARIABLES
+    bool success = false;   // Indicates function success or failure and determines control flow
+    double slope = 0.0;     // Store the slope of the line formed by point 1 and point 2 here
+    double distance = 0.0;  // Store the distance between point 1 and point 2 here
+    
+    // INPUT VALIDATION
+    if (!point1_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_mid_point, Invalid point1_ptr);
+    }
+    else if (!point2_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_mid_point, Invalid point2_ptr);
+    }
+    else if (!midPoint_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_mid_point, Invalid midPoint_ptr);
+    }
+    else if (point1_ptr == point2_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_mid_point, Duplicate points do not have a midpoint);
+    }
+    else if (point1_ptr->xCoord == point2_ptr->xCoord && point1_ptr->yCoord == point2_ptr->yCoord)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_mid_point, Duplicate coordinates do not have a midpoint);
+    }
+    else
+    {
+        success = true;  // Validation complete.  Prove this false.
+    }
+    
+    // CALCULATE MIDPOINT
+    if (true == success)
+    {
+        // 1. Calculate slope
+        slope = calc_int_point_slope(point1_ptr->xCoord, point1_ptr->yCoord, point2_ptr->xCoord, point2_ptr->yCoord);
+
+        // 2. Calculate distance
+        distance = calc_int_point_dist(point1_ptr->xCoord, point1_ptr->yCoord, point2_ptr->xCoord, point2_ptr->yCoord);
+    }
+    // 3. Solve
+    if (true == success)
+    {
+        // https://math.stackexchange.com/questions/175896/finding-a-point-along-a-line-a-certain-distance-away-from-another-point
+        // http://www.mathisfunforum.com/viewtopic.php?id=9657
+    }
+    
+    // DONE
+    return success;
 }
 
 
