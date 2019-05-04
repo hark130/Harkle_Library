@@ -1083,8 +1083,10 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
 {
     // LOCAL VARIABLES
     bool success = false;   // Indicates function success or failure and determines control flow
-    double slope = 0.0;     // Store the slope of the line formed by point 1 and point 2 here
+    // double slope = 0.0;     // Store the slope of the line formed by point 1 and point 2 here
     double distance = 0.0;  // Store the distance between point 1 and point 2 here
+    double rawX = 0.0;      // Store the raw calculation of the mid point's x coordinate here
+    double rawY = 0.0;      // Store the raw calculation of the mid point's y coordinate here
     
     // INPUT VALIDATION
     if (!point1_ptr)
@@ -1116,16 +1118,23 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
     if (true == success)
     {
         // 1. Calculate slope
-        slope = calc_int_point_slope(point1_ptr->xCoord, point1_ptr->yCoord, point2_ptr->xCoord, point2_ptr->yCoord);
+        // slope = calc_int_point_slope(point1_ptr->xCoord, point1_ptr->yCoord, point2_ptr->xCoord, point2_ptr->yCoord);
 
         // 2. Calculate distance
         distance = calc_int_point_dist(point1_ptr->xCoord, point1_ptr->yCoord, point2_ptr->xCoord, point2_ptr->yCoord);
-    }
-    // 3. Solve
-    if (true == success)
-    {
-        // https://math.stackexchange.com/questions/175896/finding-a-point-along-a-line-a-certain-distance-away-from-another-point
-        // http://www.mathisfunforum.com/viewtopic.php?id=9657
+
+        // 3. Solve
+        rawX = 0.5 * (point2_ptr->xCoord - point1_ptr->xCoord);
+        rawY = 0.5 * (point2_ptr->yCoord - point1_ptr->yCoord);
+
+        // 4. Assign
+        midPoint_ptr->xCoord = round_a_dble(rawX, rndDbl);
+        midPoint_ptr->yCoord = round_a_dble(rawY, rndDbl);
+        midPoint_ptr->dist = (double)distance / 2;
+        // printf("(X1, Y1) == (%d, %d)\n", point1_ptr->xCoord, point1_ptr->yCoord);  // DEBUGGING
+        // printf("(X2, Y2) == (%d, %d)\n", point2_ptr->xCoord, point2_ptr->yCoord);  // DEBUGGING
+        // printf("(Xm, Ym) == (%d, %d)\n", midPoint_ptr->xCoord, midPoint_ptr->yCoord);  // DEBUGGING
+        // printf("Distance == %f\nMidpoint == %f\n", distance, midPoint_ptr->dist);  // DEBUGGING
     }
     
     // DONE
