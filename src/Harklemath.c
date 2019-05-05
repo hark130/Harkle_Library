@@ -1149,10 +1149,10 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
         // midPoint_ptr->xCoord = round_a_dble(rawX, rndDbl);
         // midPoint_ptr->yCoord = round_a_dble(rawY, rndDbl);
         midPoint_ptr->dist = (double)distance / 2;
-        printf("(X1, Y1) == (%d, %d)\n", point1_ptr->xCoord, point1_ptr->yCoord);  // DEBUGGING
-        printf("(X2, Y2) == (%d, %d)\n", point2_ptr->xCoord, point2_ptr->yCoord);  // DEBUGGING
-        printf("(Xm, Ym) == (%d, %d)\n", midPoint_ptr->xCoord, midPoint_ptr->yCoord);  // DEBUGGING
-        printf("Distance == %f\nMidpoint == %f\n", distance, midPoint_ptr->dist);  // DEBUGGING
+        // printf("(X1, Y1) == (%d, %d)\n", point1_ptr->xCoord, point1_ptr->yCoord);  // DEBUGGING
+        // printf("(X2, Y2) == (%d, %d)\n", point2_ptr->xCoord, point2_ptr->yCoord);  // DEBUGGING
+        // printf("(Xm, Ym) == (%d, %d)\n", midPoint_ptr->xCoord, midPoint_ptr->yCoord);  // DEBUGGING
+        // printf("Distance == %f\nMidpoint == %f\n", distance, midPoint_ptr->dist);  // DEBUGGING
     }
     
     // DONE
