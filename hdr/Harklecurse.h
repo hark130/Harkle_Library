@@ -163,6 +163,18 @@ bool free_cardCoord_linked_list(hcCartCoord_ptr* oldHeadNode_ptr);
 hcCartCoord_ptr get_pos_num(hcCartCoord_ptr startPnt, int posNumber);
 
 
+/*
+	PURPOSE - Delete the character found at these coordinates for this window
+	INPUT
+		curWindow - Pointer to a hCurseWinDetails struct that holds oldPnt_ptr
+		oldPnt_ptr - hcCartesianCoordinate struct pointer holding the coordinate details
+	OUTPUT
+		On success, true
+		On failure, false
+ */
+bool clear_this_coord(winDetails_ptr curWindow, hcCartCoord_ptr oldPnt_ptr);
+
+
 ////////////////////// CARTESIAN COORDINATE STRUCT STOP //////////////////////
 
 ///////////////////////// NCURSES WINDOW STRUCT START ////////////////////////

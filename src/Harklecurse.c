@@ -385,6 +385,39 @@ hcCartCoord_ptr get_pos_num(hcCartCoord_ptr startPnt, int posNumber)
 }
 
 
+bool clear_this_coord(winDetails_ptr curWindow, hcCartCoord_ptr oldPnt_ptr)
+{
+	// LOCAL VARIABLES
+	bool success = false;
+
+	// INPUT VALIDATION
+	if (!curWindow)
+	{
+		HARKLE_ERROR(Harklecurse, get_pos_num, Invalid curWindow pointer);
+	}
+	else if (!oldPnt_ptr)
+	{
+		HARKLE_ERROR(Harklecurse, get_pos_num, Invalid oldPnt_ptr pointer);
+	}
+	else
+	{
+		// CLEAR IT
+		// mvwdelch(WINDOW *win, int y, int x)
+		if (ERR == mvwdelch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX))
+		{
+			HARKLE_ERROR(Harklecurse, clear_this_coord, mvwdelch failed);
+		}
+		else
+		{
+			success = true;
+		}
+	}
+
+	// DONE
+	return success;
+}
+
+
 ////////////////////// CARTESIAN COORDINATE STRUCT STOP //////////////////////
 
 ///////////////////////// NCURSES WINDOW STRUCT START ////////////////////////
