@@ -402,7 +402,6 @@ bool clear_this_coord(winDetails_ptr curWindow, hcCartCoord_ptr oldPnt_ptr)
 	else
 	{
 		// CLEAR IT
-		// THIRD ATTEMPT
 		// mvwdelch(WINDOW *win, int y, int x)
 		if (ERR == mvwdelch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX))
 		{
@@ -413,24 +412,6 @@ bool clear_this_coord(winDetails_ptr curWindow, hcCartCoord_ptr oldPnt_ptr)
 		{
 			HARKLE_ERROR(Harklecurse, clear_this_coord, mvwinsch failed);
 		}
-
-		// SECOND ATTEMPT
-		// int mvwinsch(WINDOW *win, int y, int x, chtype ch);
-		// if (ERR == mvwinsch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX, ' '))
-		// {
-		// 	HARKLE_ERROR(Harklecurse, clear_this_coord, mvwinsch failed);
-		// }
-
-		// FIRST ATTEMPT
-		// mvwdelch(WINDOW *win, int y, int x)
-		// if (ERR == mvwdelch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX))
-		// {
-		// 	HARKLE_ERROR(Harklecurse, clear_this_coord, mvwdelch failed);
-		// }
-		// else if (ERR == mvwaddch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX, ' '))
-		// {
-		// 	HARKLE_ERROR(Harklecurse, clear_this_coord, mvwaddch failed);
-		// }
 		else
 		{
 			success = true;
