@@ -402,11 +402,35 @@ bool clear_this_coord(winDetails_ptr curWindow, hcCartCoord_ptr oldPnt_ptr)
 	else
 	{
 		// CLEAR IT
+		// THIRD ATTEMPT
 		// mvwdelch(WINDOW *win, int y, int x)
 		if (ERR == mvwdelch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX))
 		{
 			HARKLE_ERROR(Harklecurse, clear_this_coord, mvwdelch failed);
 		}
+		// int mvwinsch(WINDOW *win, int y, int x, chtype ch);
+		else if (ERR == mvwinsch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX, ' '))
+		{
+			HARKLE_ERROR(Harklecurse, clear_this_coord, mvwinsch failed);
+		}
+
+		// SECOND ATTEMPT
+		// int mvwinsch(WINDOW *win, int y, int x, chtype ch);
+		// if (ERR == mvwinsch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX, ' '))
+		// {
+		// 	HARKLE_ERROR(Harklecurse, clear_this_coord, mvwinsch failed);
+		// }
+
+		// FIRST ATTEMPT
+		// mvwdelch(WINDOW *win, int y, int x)
+		// if (ERR == mvwdelch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX))
+		// {
+		// 	HARKLE_ERROR(Harklecurse, clear_this_coord, mvwdelch failed);
+		// }
+		// else if (ERR == mvwaddch(curWindow->win_ptr, oldPnt_ptr->absY, oldPnt_ptr->absX, ' '))
+		// {
+		// 	HARKLE_ERROR(Harklecurse, clear_this_coord, mvwaddch failed);
+		// }
 		else
 		{
 			success = true;
@@ -759,7 +783,7 @@ bool print_plot_list(WINDOW* currWin, hcCartCoord_ptr headNode)
 	while (currNode && true == retVal)
 	{
 		// fprintf(stdout, "Printing %c at (%d, %d)\t", currNode->graphic, currNode->absX, currNode->absY);  // DEBUGGING
-		if (OK != mvwaddch(currWin, currNode->absY, currNode->absX, currNode->graphic))
+		if (ERR == mvwaddch(currWin, currNode->absY, currNode->absX, currNode->graphic))
 		{
 			// fprintf(stdout, "Failed to print %c at (%d, %d)\t", currNode->graphic, currNode->absX, currNode->absY);  // DEBUGGING
 			HARKLE_ERROR(Harklecurse, print_plot_list, mvwaddch failed);
