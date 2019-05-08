@@ -1171,11 +1171,11 @@ int solve_point_slope_x(int knownX1, int knownY1, int knownY0, double slope, int
     {
         // SOLVE
         tempX0 = ((double)(knownY0 - knownY1) / slope) + knownX1;
-        unknownX2 = round_a_dble(tempX0, rndDbl);
+        unknownX0 = round_a_dble(tempX0, rndDbl);
     }
 
     // DONE
-    return unknownX2;
+    return unknownX0;
 }
 
 
@@ -1186,7 +1186,7 @@ int solve_point_slope_y(int knownX1, int knownY1, int knownX0, double slope, int
     double tempY0 = 0.0;
 
     // SOLVE
-    tempY0 = (slope(knownX0 - knownX1)) + knownY1;
+    tempY0 = (slope * (knownX0 - knownX1)) + knownY1;
     unknownY0 = round_a_dble(tempY0, rndDbl);
 }
 
