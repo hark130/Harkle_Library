@@ -1160,6 +1160,37 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
 }
 
 
+int solve_point_slope_x(int knownX1, int knownY1, int knownY0, double slope, int rndDbl)
+{
+    // LOCAL VARIABLES
+    int unknownX0 = 0;    // Round tempX2 here once it's calculates
+    double tempX0 = 0.0;  // Store the *actual* value of x here
+
+    // INPUT VALIDATION
+    if (true == dble_not_equal(slope, 0.0, DBL_PRECISION))
+    {
+        // SOLVE
+        tempX0 = ((double)(knownY0 - knownY1) / slope) + knownX1;
+        unknownX2 = round_a_dble(tempX0, rndDbl);
+    }
+
+    // DONE
+    return unknownX2;
+}
+
+
+int solve_point_slope_y(int knownX1, int knownY1, int knownX0, double slope, int rndDbl)
+{
+    // LOCAL VARIBLES
+    int unknownY0 = 0;
+    double tempY0 = 0.0;
+
+    // SOLVE
+    tempY0 = (slope(knownX0 - knownX1)) + knownY1;
+    unknownY0 = round_a_dble(tempY0, rndDbl);
+}
+
+
 //////////////////////////////////////////////////////////////////////////////
 ////////////////////////// GEOMETRIC FUNCTIONS STOP //////////////////////////
 //////////////////////////////////////////////////////////////////////////////

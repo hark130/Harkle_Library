@@ -337,7 +337,7 @@ bool verify_slope(int xCoord1, int yCoord1, int xCoord2, int yCoord2, double slo
         point2_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
         midPoint_ptr - Out parameter to hold the coordinates and ~length of the mid point between point1
             and point2
-        rndDir - The direction to round the resulting coordinates:
+        rndDbl - The direction to round the resulting coordinates:
             Use the HM_* MACROS above or
             Use the original MACROS from fenv.h or
             Pass 0 to utilize the default settings
@@ -350,6 +350,50 @@ bool verify_slope(int xCoord1, int yCoord1, int xCoord2, int yCoord2, double slo
         This function will fail if the point1 coordinates are the same as the point2 coordinates
  */
 bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr midPoint_ptr, int rndDbl);
+
+
+/*
+    PURPOSE - Solve the point slope form of a line equation for a missing x coordinate, rounded using rndDbl
+    INPUT
+        knownX1 - The x coordinate of the known point
+        knownY1 - The y coordinate of the known point
+        knownY0 - The y coordinate associated with the x coordinate to solve for
+        slope - The slope of the line
+        rndDbl - The direction to round the resulting coordinates:
+            Use the HM_* MACROS above or
+            Use the original MACROS from fenv.h or
+            Pass 0 to utilize the default settings
+    OUTPUT
+        On success, the x coordinate associated with knownY2 rounded in accordance with rndDbl
+        On failure, 0
+    NOTES
+        The actual calculated result of this function is more likely to be a floating point value instead
+            of a whole number.  This function was written to round the resulting double to an integer to
+            aid in plotting points.
+ */
+int solve_point_slope_x(int knownX1, int knownY1, int knownY0, double slope, int rndDbl);
+
+
+/*
+    PURPOSE - Solve the point slope form of a line equation for a missing y coordinate, rounded using rndDbl
+    INPUT
+        knownX1 - The x coordinate of the known point
+        knownY1 - The y coordinate of the known point
+        knownX0 - The x coordinate associated with the x coordinate to solve for
+        slope - The slope of the line
+        rndDbl - The direction to round the resulting coordinates:
+            Use the HM_* MACROS above or
+            Use the original MACROS from fenv.h or
+            Pass 0 to utilize the default settings
+    OUTPUT
+        On success, the y coordinate associated with knownY2 rounded in accordance with rndDbl
+        On failure, 0
+    NOTES
+        The actual calculated result of this function is more likely to be a floating point value instead
+            of a whole number.  This function was written to round the resulting double to an integer to
+            aid in plotting points.
+ */
+int solve_point_slope_y(int knownX1, int knownY1, int knownX0, double slope, int rndDbl);
 
 
 //////////////////////////////////////////////////////////////////////////////
