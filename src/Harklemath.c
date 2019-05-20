@@ -1297,21 +1297,25 @@ bool verify_triangle(int AX, int AY, int BX, int BY, int CX, int CY, int xCoord,
     if (true == dble_less_than(areaABcoord, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle A B Coord);
+        fprintf(stderr, "(AX, AY) == (%d, %d)\n(BX, BY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", AX, AY, BX, AY, xCoord, yCoord);  // DEBUGGING
         verified = false;
     }
     else if (true == dble_less_than(areaBCcoord, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle B C Coord);
+        fprintf(stderr, "(BX, BY) == (%d, %d)\n(CX, CY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", BX, BY, CX, CY, xCoord, yCoord);  // DEBUGGING
         verified = false;
     }
     else if (true == dble_less_than(areaCAcoord, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle C A Coord);
+        fprintf(stderr, "(CX, CY) == (%d, %d)\n(AX, AY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", CX, CY, AX, AY, xCoord, yCoord);  // DEBUGGING
         verified = false;
     }
     else if (true == dble_less_than(areaABC, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle A B C);
+        fprintf(stderr, "(AX, AY) == (%d, %d)\n(BX, BY) == (%d, %d)\n(CX, CY) == (%d, %d)\n", AX, AY, BX, BY, CX, CY);  // DEBUGGING
         verified = false;
     }
     else
