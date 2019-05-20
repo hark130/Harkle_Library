@@ -1161,6 +1161,55 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
 }
 
 
+bool determine_triangle_center(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr point3_ptr,
+                               hmLineLen_ptr centerPoint_ptr, int rndDbl)
+{
+    // LOCAL VARIABLES
+    bool success = false;   // Indicates function success or failure and determines control flow
+
+    // INPUT VALIDATION
+    if (!point1_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_triangle_center, Invalid point1_ptr);
+    }
+    else if (!point2_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_triangle_center, Invalid point2_ptr);
+    }
+    else if (!point3_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_triangle_center, Invalid point3_ptr);
+    }
+    else if (!centerPoint_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_triangle_center, Invalid centerPoint_ptr);
+    }
+    else if (point1_ptr == point2_ptr || point1_ptr == point3_ptr || point2_ptr == point3_ptr)
+    {
+        HARKLE_ERROR(Harkleswarm, determine_triangle_center, Duplicate points can not form a triangle);
+    }
+    else if ((point1_ptr->xCoord == point2_ptr->xCoord && point1_ptr->yCoord == point2_ptr->yCoord) ||
+             (point1_ptr->xCoord == point3_ptr->xCoord && point1_ptr->yCoord == point3_ptr->yCoord) ||
+             (point2_ptr->xCoord == point3_ptr->xCoord && point2_ptr->yCoord == point3_ptr->yCoord))
+    {
+        HARKLE_ERROR(Harkleswarm, determine_triangle_center, Duplicate coordinates are not a triangle);
+    }
+    else
+    {
+        success = true;  // Validation complete.  Prove this false.
+    }
+
+    // CALCULATE TRIANGLE CENTER
+    if (true == success)
+    {
+
+    }
+
+    // DONE
+    return success;
+}
+
+
 int solve_point_slope_x(int knownX1, int knownY1, int knownY0, double slope, int rndDbl)
 {
     // LOCAL VARIABLES
@@ -1189,6 +1238,93 @@ int solve_point_slope_y(int knownX1, int knownY1, int knownX0, double slope, int
     // SOLVE
     tempY0 = (slope * (knownX0 - knownX1)) + knownY1;
     unknownY0 = round_a_dble(tempY0, rndDbl);
+}
+
+
+double calculate_triangle_area(int AX, int AY, int BX, int BY, int CX, int CY)
+{
+    // LOCAL VARIABLES
+    double area = 0.0;      // Area of the triangle formed by points A, B, and C
+    double lenAB = 0.0;     // Length of line AB
+    double lenBC = 0.0;     // Length of line BC
+    double lenCA = 0.0;     // Length of line CA
+    double semiPerm = 0.0;  // Semiperimeter of trianble ABC
+
+    if ((AX == BX && AY == BY) || (AX == CX && AY == CY) || (BX == CX && BY == CY))
+    {
+        HARKLE_ERROR(Harkleswarm, calculate_triangle_area, Duplicate coordinates are not a triangle);
+        area = -1.0;
+    }
+    else if ((AX == BX && AX == CX) || (AY == BY && AY == CY))
+    {
+        HARKLE_ERROR(Harkleswarm, calculate_triangle_area, Line coordinates are not a triangle);
+        area = -1.0;
+    }
+    else
+    {
+        // 1. Calculate the triangle's semiperimeter
+        lenAB = calc_int_point_dist(AX, AY, BX, BY);
+        lenBC = calc_int_point_dist(BX, BY, CX, CY);
+        lenCA = calc_int_point_dist(CX, CY, AX, AY);
+        semiPerm = (lenAB + lenBC + lenCA) / (double)2;
+
+        // 2. Heron's formula
+        area = sqrt(semiPerm*((semiPerm-lenAB)*(semiPerm-lenBC)*(semiPerm-lenCA)));
+    }
+
+    // DONE
+    return area;
+}
+
+
+bool verify_triangle(int AX, int AY, int BX, int BY, int CX, int CY, int xCoord, int yCoord, int maxPrec)
+{
+    // LOCAL VARIABLES
+    bool verified = true;      // True if (xCoord, yCoord) lies within triangle ABC
+    double areaABcoord = 0.0;  // Area of the triangle formed by points A, B, and (xCoord, yCoord)
+    double areaBCcoord = 0.0;  // Area of the triangle formed by points B, C, and (xCoord, yCoord)
+    double areaCAcoord = 0.0;  // Area of the triangle formed by points C, A, and (xCoord, yCoord)
+    double areaABC = 0.0;      // Area of the triangle formed by points A, B, and C
+
+    // CHECK FOR POINT IN TRIANGLE
+    // 1. Determine all areas
+    areaABcoord = calculate_triangle_area(AX, AY, BX, BY, xCoord, yCoord);
+    areaBCcoord = calculate_triangle_area(BX, BY, CX, CY, xCoord, yCoord);
+    areaCAcoord = calculate_triangle_area(CX, CY, AX, AY, xCoord, yCoord);
+    areaABC = calculate_triangle_area(AX, AY, BX, BY, CX, CY);
+
+    // 2. Verify all areas
+    if (true == dble_less_than(areaABcoord, (double)0.0, maxPrec))
+    {
+        HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle A B Coord);
+        verified = false;
+    }
+    else if (true == dble_less_than(areaBCcoord, (double)0.0, maxPrec))
+    {
+        HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle B C Coord);
+        verified = false;
+    }
+    else if (true == dble_less_than(areaCAcoord, (double)0.0, maxPrec))
+    {
+        HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle C A Coord);
+        verified = false;
+    }
+    else if (true == dble_less_than(areaABC, (double)0.0, maxPrec))
+    {
+        HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle A B C);
+        verified = false;
+    }
+    else
+    {
+        // 3. Compare all areas
+        if (false == dble_equal_to(areaABC, areaABcoord + areaBCcoord + areaCAcoord, maxPrec))
+        {
+            verified = false;
+        }
+    }
+
+    // DONE
+    return verified;
 }
 
 

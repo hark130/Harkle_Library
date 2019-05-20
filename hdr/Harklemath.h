@@ -18,7 +18,9 @@ typedef struct hmLineLengthCalculation
     double dist;  // Distance from the current point
 } hmLineLen, *hmLineLen_ptr;
 
-// double is a 64 bit IEEE 754 double precision Floating Point Number (1 bit for the sign, 11 bits for the exponent, and 52* bits for the value), i.e. double has 15 decimal digits of precision.
+// double is a 64 bit IEEE 754 double precision Floating Point Number
+// (1 bit for the sign, 11 bits for the exponent, and 52* bits for the value),
+// i.e. double has 15 decimal digits of precision.
 #define DBL_PRECISION 15
 
 // Rounding MACROs to pass as round_a_dble()'s rndDir argument
@@ -353,6 +355,29 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
 
 
 /*
+    PURPOSE - Calculate the center point of a triangle created by two points
+    INPUT
+        point1_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
+        point2_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
+        point3_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
+        centerPoint_ptr - Out parameter to hold the "center" coordinates of the triangle formed by the points
+        rndDbl - The direction to round the resulting coordinates:
+            Use the HM_* MACROS above or
+            Use the original MACROS from fenv.h or
+            Pass 0 to utilize the default settings
+    OUTPUT
+        On success, true
+        On failure, false
+    NOTES
+        When successful, this function will store the coordinates of the triangle's center into centerPoint_ptr
+        This function will fail if any point is the same as any other point
+        This function will fail if the provided points form a line
+ */
+bool determine_triangle_center(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr point3_ptr,
+                               hmLineLen_ptr centerPoint_ptr, int rndDbl);
+
+
+/*
     PURPOSE - Solve the point slope form of a line equation for a missing x coordinate, rounded using rndDbl
     INPUT
         knownX1 - The x coordinate of the known point
@@ -394,6 +419,46 @@ int solve_point_slope_x(int knownX1, int knownY1, int knownY0, double slope, int
             aid in plotting points.
  */
 int solve_point_slope_y(int knownX1, int knownY1, int knownX0, double slope, int rndDbl);
+
+
+/*
+    PURPOSE - Calculate the are of a triangle formed by three points A, B, and C
+    INPUT
+        AX - The x coordinate of a point A
+        AY - The y coordinate of a point A
+        BX - The x coordinate of a point B
+        BY - The y coordinate of a point B
+        CX - The x coordinate of a point C
+        CY - The y coordinate of a point C
+    OUTPUT
+        On success, the area of the triangle formed by points A, B, and C
+        On failure, a negative value
+    NOTES
+        This function implements Heron's formula
+ */
+double calculate_triangle_area(int AX, int AY, int BX, int BY, int CX, int CY);
+
+
+/*
+    PURPOSE - Verify that the point (xCoord, yCoord) falls within triangle ABC
+    INPUT
+        AX - The x coordinate of a point A
+        AY - The y coordinate of a point A
+        BX - The x coordinate of a point B
+        BY - The y coordinate of a point B
+        CX - The x coordinate of a point C
+        CY - The y coordinate of a point C
+        xCoord - The x coordinate of a point to verify lies within triangle ABC
+        yCoord - The y coordinate of a point to verify lies within triangle ABC
+        maxPrec - Maximum floating point precision when comparing the area of triangles
+    OUTPUT
+        If (xCoord, yCoord) falls within triangle ABC, true
+        Otherwise, false
+    NOTES
+        This function checks that the area of triangles formed by ABCoord, BCCoord, and
+            CACoord approximately equal the area of the triangle fromed by ABC.
+ */
+bool verify_triangle(int AX, int AY, int BX, int BY, int CX, int CY, int xCoord, int yCoord, int maxPrec);
 
 
 //////////////////////////////////////////////////////////////////////////////
