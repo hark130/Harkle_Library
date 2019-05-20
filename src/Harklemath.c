@@ -1030,6 +1030,7 @@ double calc_int_point_dist(int xCoord1, int yCoord1, int xCoord2, int yCoord2)
     {
         // Calculate the distance
         calcDistance = sqrt(pow((xCoord2 - xCoord1), 2) + pow((yCoord2 - yCoord1), 2));
+        // fprintf(stderr, "The distance between (%d, %d) and (%d, %d) is %lf\n", xCoord1, yCoord1, xCoord2, yCoord2, calcDistance);  // DEBUGGING
     }
 
     // DONE
