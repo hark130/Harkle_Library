@@ -1166,6 +1166,8 @@ bool determine_triangle_centroid(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_
 {
     // LOCAL VARIABLES
     bool success = false;   // Indicates function success or failure and determines control flow
+    double tmpX = 0.0;     // Store the floating point centerPoint X coordinate here
+    double tmpY = 0.0;     // Store the floating point centerPoint Y coordinate here
 
     // INPUT VALIDATION
     if (!point1_ptr)
@@ -1202,8 +1204,14 @@ bool determine_triangle_centroid(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_
     // CALCULATE TRIANGLE CENTER
     if (true == success)
     {
-        centerPoint_ptr->xCoord = 10;
-        centerPoint_ptr->yCoord = 10;
+        // Calculate coordinates
+        tmpX = (double)(point1_ptr->xCoord + point2_ptr->xCoord + point3_ptr->xCoord) / 3;
+        tmpY = (double)(point1_ptr->yCoord + point2_ptr->yCoord + point3_ptr->yCoord) / 3;
+
+        // Round coordinates
+        centerPoint_ptr->xCoord = round_a_dble(tmpX, rndDbl);
+        centerPoint_ptr->yCoord = round_a_dble(tmpY, rndDbl);
+        fprintf(stderr, "Triangle Centroid == (%d, %d)\n", centerPoint_ptr->xCoord, centerPoint_ptr->yCoord);  // DEBUGGING
     }
 
     // DONE
@@ -1339,7 +1347,7 @@ bool verify_triangle(int AX, int AY, int BX, int BY, int CX, int CY, int xCoord,
         // 3. Compare all areas
         if (false == dble_equal_to(areaABC, areaABcoord + areaBCcoord + areaCAcoord, maxPrec))
         {
-            fprintf(stderr, "%.15lf != %.15lf (%.15lf + %.15lf + %.15lf) at %d precision\n", areaABC, areaABcoord + areaBCcoord + areaCAcoord, areaABcoord, areaBCcoord, areaCAcoord, maxPrec);  // DEBUGGING
+            // fprintf(stderr, "%.15lf != %.15lf (%.15lf + %.15lf + %.15lf) at %d precision\n", areaABC, areaABcoord + areaBCcoord + areaCAcoord, areaABcoord, areaBCcoord, areaCAcoord, maxPrec);  // DEBUGGING
             verified = false;
         }
     }
