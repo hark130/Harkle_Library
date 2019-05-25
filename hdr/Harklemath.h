@@ -355,12 +355,12 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
 
 
 /*
-    PURPOSE - Calculate the center point of a triangle created by two points
+    PURPOSE - Calculate the centroid point of a triangle created by three points
     INPUT
         point1_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
         point2_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
         point3_ptr - Pointer to a hmLineLen struct holding the x and y coordinates of a point
-        centerPoint_ptr - Out parameter to hold the "center" coordinates of the triangle formed by the points
+        centerPoint_ptr - Out parameter to hold the "centroid" coordinates of the triangle formed by the points
         rndDbl - The direction to round the resulting coordinates:
             Use the HM_* MACROS above or
             Use the original MACROS from fenv.h or
@@ -369,12 +369,12 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
         On success, true
         On failure, false
     NOTES
-        When successful, this function will store the coordinates of the triangle's center into centerPoint_ptr
+        When successful, this function will store the coordinates of the triangle's centroid into centerPoint_ptr
         This function will fail if any point is the same as any other point
         This function will fail if the provided points form a line
  */
-bool determine_triangle_center(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr point3_ptr,
-                               hmLineLen_ptr centerPoint_ptr, int rndDbl);
+bool determine_triangle_centroid(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr point3_ptr,
+                                 hmLineLen_ptr centerPoint_ptr, int rndDbl);
 
 
 /*

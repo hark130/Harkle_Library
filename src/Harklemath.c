@@ -1161,8 +1161,8 @@ bool determine_mid_point(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmL
 }
 
 
-bool determine_triangle_center(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr point3_ptr,
-                               hmLineLen_ptr centerPoint_ptr, int rndDbl)
+bool determine_triangle_centroid(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_ptr, hmLineLen_ptr point3_ptr,
+                                 hmLineLen_ptr centerPoint_ptr, int rndDbl)
 {
     // LOCAL VARIABLES
     bool success = false;   // Indicates function success or failure and determines control flow
@@ -1202,7 +1202,8 @@ bool determine_triangle_center(hmLineLen_ptr point1_ptr, hmLineLen_ptr point2_pt
     // CALCULATE TRIANGLE CENTER
     if (true == success)
     {
-
+        centerPoint_ptr->xCoord = 10;
+        centerPoint_ptr->yCoord = 10;
     }
 
     // DONE
