@@ -1029,7 +1029,7 @@ double calc_int_point_dist(int xCoord1, int yCoord1, int xCoord2, int yCoord2)
     if (xCoord1 != xCoord2 || yCoord1 != yCoord2)
     {
         // Calculate the distance
-        calcDistance = sqrt(pow((xCoord2 - xCoord1), 2) + pow((yCoord2 - yCoord1), 2));
+        calcDistance = (double)sqrt(pow((xCoord2 - xCoord1), 2) + pow((yCoord2 - yCoord1), 2));
         // fprintf(stderr, "The distance between (%d, %d) and (%d, %d) is %lf\n", xCoord1, yCoord1, xCoord2, yCoord2, calcDistance);  // DEBUGGING
     }
 
@@ -1263,10 +1263,20 @@ double calculate_triangle_area(int AX, int AY, int BX, int BY, int CX, int CY)
     else
     {
         // 1. Calculate the triangle's semiperimeter
-        lenAB = calc_int_point_dist(AX, AY, BX, BY);
-        lenBC = calc_int_point_dist(BX, BY, CX, CY);
-        lenCA = calc_int_point_dist(CX, CY, AX, AY);
-        semiPerm = (lenAB + lenBC + lenCA) / (double)2;
+        lenAB = (double)calc_int_point_dist(AX, AY, BX, BY);
+        lenBC = (double)calc_int_point_dist(BX, BY, CX, CY);
+        lenCA = (double)calc_int_point_dist(CX, CY, AX, AY);
+        semiPerm = (double)(lenAB + lenBC + lenCA) / (double)2;
+
+        // 2. Check for a line
+        //  bool dble_equal_to(double x, double y, int precision);
+        // if (semiPerm == lenAB)
+        if (true == dble_equal_to(semiPerm, lenAB, DBL_PRECISION) ||
+            true == dble_equal_to(semiPerm, lenBC, DBL_PRECISION) ||
+            true == dble_equal_to(semiPerm, lenCA, DBL_PRECISION))
+        {
+            fprintf(stderr, "Points A, B, and C form a line\n");  // DEBUGGING
+        }
 
         // 2. Heron's formula
         area = sqrt(semiPerm*((semiPerm-lenAB)*(semiPerm-lenBC)*(semiPerm-lenCA)));
@@ -1288,6 +1298,7 @@ bool verify_triangle(int AX, int AY, int BX, int BY, int CX, int CY, int xCoord,
 
     // CHECK FOR POINT IN TRIANGLE
     // 1. Determine all areas
+    // fprintf(stderr, "%s\n", "HERE!");  // DEBUGGING
     areaABcoord = calculate_triangle_area(AX, AY, BX, BY, xCoord, yCoord);
     areaBCcoord = calculate_triangle_area(BX, BY, CX, CY, xCoord, yCoord);
     areaCAcoord = calculate_triangle_area(CX, CY, AX, AY, xCoord, yCoord);
@@ -1297,25 +1308,29 @@ bool verify_triangle(int AX, int AY, int BX, int BY, int CX, int CY, int xCoord,
     if (true == dble_less_than(areaABcoord, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle A B Coord);
-        fprintf(stderr, "(AX, AY) == (%d, %d)\n(BX, BY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", AX, AY, BX, AY, xCoord, yCoord);  // DEBUGGING
+        // fprintf(stderr, "calculate_triangle_area() returned %lf\n", areaABcoord);  // DEBUGGING
+        // fprintf(stderr, "(AX, AY) == (%d, %d)\n(BX, BY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", AX, AY, BX, AY, xCoord, yCoord);  // DEBUGGING
         verified = false;
     }
     else if (true == dble_less_than(areaBCcoord, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle B C Coord);
-        fprintf(stderr, "(BX, BY) == (%d, %d)\n(CX, CY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", BX, BY, CX, CY, xCoord, yCoord);  // DEBUGGING
+        // fprintf(stderr, "calculate_triangle_area() returned %lf\n", areaBCcoord);  // DEBUGGING
+        // fprintf(stderr, "(BX, BY) == (%d, %d)\n(CX, CY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", BX, BY, CX, CY, xCoord, yCoord);  // DEBUGGING
         verified = false;
     }
     else if (true == dble_less_than(areaCAcoord, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle C A Coord);
-        fprintf(stderr, "(CX, CY) == (%d, %d)\n(AX, AY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", CX, CY, AX, AY, xCoord, yCoord);  // DEBUGGING
+        // fprintf(stderr, "calculate_triangle_area() returned %lf\n", areaCAcoord);  // DEBUGGING
+        // fprintf(stderr, "(CX, CY) == (%d, %d)\n(AX, AY) == (%d, %d)\n(cX, cY) == (%d, %d)\n", CX, CY, AX, AY, xCoord, yCoord);  // DEBUGGING
         verified = false;
     }
     else if (true == dble_less_than(areaABC, (double)0.0, maxPrec))
     {
         HARKLE_ERROR(Harkleswarm, verify_triangle, calculate_triangle_area failed on triangle A B C);
-        fprintf(stderr, "(AX, AY) == (%d, %d)\n(BX, BY) == (%d, %d)\n(CX, CY) == (%d, %d)\n", AX, AY, BX, BY, CX, CY);  // DEBUGGING
+        // fprintf(stderr, "calculate_triangle_area() returned %lf\n", areaABC);  // DEBUGGING
+        // fprintf(stderr, "(AX, AY) == (%d, %d)\n(BX, BY) == (%d, %d)\n(CX, CY) == (%d, %d)\n", AX, AY, BX, BY, CX, CY);  // DEBUGGING
         verified = false;
     }
     else
@@ -1323,6 +1338,7 @@ bool verify_triangle(int AX, int AY, int BX, int BY, int CX, int CY, int xCoord,
         // 3. Compare all areas
         if (false == dble_equal_to(areaABC, areaABcoord + areaBCcoord + areaCAcoord, maxPrec))
         {
+            fprintf(stderr, "%.15lf != %.15lf (%.15lf + %.15lf + %.15lf) at %d precision\n", areaABC, areaABcoord + areaBCcoord + areaCAcoord, areaABcoord, areaBCcoord, areaCAcoord, maxPrec);  // DEBUGGING
             verified = false;
         }
     }
