@@ -431,7 +431,8 @@ int solve_point_slope_y(int knownX1, int knownY1, int knownX0, double slope, int
         CX - The x coordinate of a point C
         CY - The y coordinate of a point C
     OUTPUT
-        On success, the area of the triangle formed by points A, B, and C
+        On success, the area of the triangle formed by points A, B, and C.
+            If A, B, and C form a line, the area is 0.
         On failure, a negative value
     NOTES
         This function implements Heron's formula
